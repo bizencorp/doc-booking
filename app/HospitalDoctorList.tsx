@@ -1,57 +1,61 @@
 import { View, Text, ActivityIndicator } from "react-native";
 import React, { useState } from "react";
+import PageHeader from "../components/Shared/PageHeader";
+import HospitalDoctorTabs from "../components/HospitalDoctorScreen/HospitalDoctorTabs";
+import HospitalListBig from "../components/HospitalDoctorScreen/HospitalListBig";
+import DoctorList from "../components/HospitalDoctorScreen/DoctorList";
 import { useEffect } from "react";
 import GlobalApi from "@/constants/GlobalApi";
 import { Colors } from "@/constants/Colors";
-import { styles } from "@/constants/Styles";
-import HospitalDoctorTabs from "@/components/HospitalDoctorScreen/HospitalDoctorTabs";
-import HospitalListBig from "@/components/HospitalDoctorScreen/HospitalListBig";
-import DoctorList from "@/components/HospitalDoctorScreen/DoctorList";
+import { useLocalSearchParams } from "expo-router";
 
-export default function Explore() {
-  const [hospitalList, setHospitalList]: any = useState();
-  const [doctorList, setDoctorList] :any = useState();
-  const [activeTab, setActiveTab] = useState("Hospital");
+
+export default function HospitalDoctorList() {
+  const {categoryName} = useLocalSearchParams();
+
+  const [hospitalList, setHospitalList] : any[] = useState()
+  const [doctorList, setDoctorList] = useState()
+  const [activeTab, setActiveTab] = useState('Hospital')
 
   useEffect(() => {
-    getHospitals();
-    getDoctors();
+    getHospitalByCategory();
+    getDoctorByCategory();
   }, []);
 
-  const getHospitals = () => {
-    GlobalApi.getHospitalList().then((resp) => {
+  const getHospitalByCategory = () => {
+    GlobalApi.getHospitalByCategories(categoryName).then((resp) => {
       setHospitalList(resp.data.data);
     });
   };
 
-  const getDoctors = () => {
-    GlobalApi.getDoctorList().then((resp) => {
+  const getDoctorByCategory = () => {
+    GlobalApi.getDoctorByCategories(categoryName).then((resp) => {
       setDoctorList(resp.data.data);
     });
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: Colors.background }}>
+    <View>
       <View
         style={{
           position: "absolute",
           top: 0,
           backgroundColor: Colors.background,
           paddingHorizontal: 20,
-          paddingTop: 45,
-          alignItems: "center",
+          paddingTop: 40,
           paddingBottom: 10,
+          gap: 6,
           zIndex: 2,
-          width: "100%",
+          width:'100%'
         }}
       >
-        <Text style={styles.h1title}>Explore</Text>
+        <PageHeader title={categoryName} rightBtn={"search"} />
         <HospitalDoctorTabs
           activeTab={(value: string) => setActiveTab(value)}
         />
       </View>
 
-      <View style={{ marginTop: 155, paddingBottom: 75 }}>
+      <View style={{ marginTop: 165}}>
         {activeTab == "Hospital" ? (
           !hospitalList?.length ? (
             <ActivityIndicator
@@ -60,9 +64,9 @@ export default function Explore() {
               style={{ marginTop: "50%" }}
             />
           ) : (
-            <HospitalListBig hospitalList={hospitalList} />
+            <HospitalListBig hospitalList={hospitalList}/>
           )
-        ) : !doctorList?.length ? (
+        ) : !DoctorList?.length ? (
           <ActivityIndicator
             size={"large"}
             color={Colors.tint}
@@ -75,3 +79,4 @@ export default function Explore() {
     </View>
   );
 }
+ 

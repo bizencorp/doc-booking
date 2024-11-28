@@ -1,20 +1,37 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
-import { useEffect } from 'react';
-import 'react-native-reanimated';
+import { ClerkProvider, SignedIn, SignedOut, useUser } from "@clerk/clerk-expo";
+import { SafeAreaView, StyleSheet } from "react-native";
+import { useFonts } from "expo-font";
+import { Stack } from "expo-router";
+import * as SplashScreen from "expo-splash-screen";
+import { useEffect } from "react";
+import "react-native-reanimated";
+import Login from "./Login";
 
-import { useColorScheme } from '@/hooks/useColorScheme';
+import { StatusBar } from "expo-status-bar";
+import { Colors } from "@/constants/Colors";
+import { TamaguiProvider } from "tamagui";
+
+import tamaguiConfig from "../tamagui.config";
+
+const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!;
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
   const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
+    InterLight: require("@tamagui/font-inter/otf/Inter-Light.otf"),
+    Inter: require("@tamagui/font-inter/otf/Inter-Medium.otf"),
+    InterRegular: require("@tamagui/font-inter/otf/Inter-Regular.otf"),
+    InterSemiBold: require("@tamagui/font-inter/otf/Inter-SemiBold.otf"),
+    InterBold: require("@tamagui/font-inter/otf/Inter-Bold.otf"),
   });
+
+  if (!publishableKey) {
+    throw new Error(
+      "Missing Publishable Key. Please set EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY in your .env"
+    );
+  }
 
   useEffect(() => {
     if (loaded) {
@@ -27,11 +44,74 @@ export default function RootLayout() {
   }
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-    </ThemeProvider>
+    <ClerkProvider publishableKey={publishableKey}>
+      <TamaguiProvider config={tamaguiConfig}>
+        <SafeAreaView style={styles.container}>
+          <SignedIn>
+            <Stack
+              screenOptions={{
+                animation: "ios",
+                headerShown: false,
+              }}
+            >
+              <Stack.Screen name="(tabs)" />
+              <Stack.Screen
+                name="HospitalDoctorList"
+                options={{
+                  contentStyle: { backgroundColor: Colors.border },
+                }}
+              />
+              <Stack.Screen
+                name="HospitalDetail"
+                options={{
+                  contentStyle: { backgroundColor: Colors.background },
+                }}
+              />
+              <Stack.Screen
+                name="DoctorDetail"
+                options={{
+                  contentStyle: { backgroundColor: Colors.background },
+                }}
+              />
+              <Stack.Screen
+                name="BookAppointment"
+                options={{
+                  contentStyle: { backgroundColor: Colors.border },
+                }}
+              />
+              <Stack.Screen
+                name="ProfileEdit"
+                options={{
+                  contentStyle: { backgroundColor: Colors.background },
+                }}
+              />
+              <Stack.Screen
+                name="HospitalsDocs"
+                options={{
+                  contentStyle: { backgroundColor: Colors.background },
+                }}
+              />
+              <Stack.Screen
+                name="EditBooking"
+                options={{
+                  contentStyle: { backgroundColor: Colors.border },
+                }}
+              />
+            </Stack>
+          </SignedIn>
+          <SignedOut>
+            <Login />
+          </SignedOut>
+          <StatusBar style="dark" />
+        </SafeAreaView>
+      </TamaguiProvider>
+    </ClerkProvider>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: Colors.background,
+  },
+});

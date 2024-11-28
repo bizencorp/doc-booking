@@ -1,35 +1,49 @@
-import { Tabs } from 'expo-router';
-import React from 'react';
-
-import { TabBarIcon } from '@/components/navigation/TabBarIcon';
-import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
+import { Tabs } from "expo-router";
+import { TabBarIcon } from "@/components/navigation/TabBarIcon";
+import { Colors } from "@/constants/Colors";
+import { TabBar } from "@/components/navigation/TabBar";
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
-
   return (
     <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        headerShown: false,
-      }}>
+      tabBar={(props) => <TabBar {...props} />}
+      screenOptions={{  headerShown: false }}
+    
+    >
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Home',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
-          ),
+          title: "Home",
+          // tabBarIcon: ({ color, focused }) => (
+          //   <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
+          // ),
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="Explore"
         options={{
-          title: 'Explore',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
-          ),
+          title: "Explore",
+          // tabBarIcon: ({ color, focused }) => (
+          //   <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
+          // ),
+        }}
+      />
+      <Tabs.Screen
+        name="Appointment"
+        options={{
+          title: "Appointment",
+          // tabBarIcon: ({ color, focused }) => (
+          //   <TabBarIcon name={focused ? 'calendar' : 'calendar-outline'} color={color} />
+          // ),
+        }}
+      />
+      <Tabs.Screen
+        name="Profile"
+        options={{
+          title: "Profile",
+          // tabBarIcon: ({ color, focused }) => (
+          //   <TabBarIcon name={focused ? 'account' : 'account-outline'} color={color} />
+          // ),
         }}
       />
     </Tabs>
