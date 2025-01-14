@@ -6,15 +6,14 @@ import { router } from "expo-router";
 
 export default function HospitalListBig({ hospitalList} : any) {
   return (
-    <View
-      style={{paddingHorizontal: 20, backgroundColor: Colors.tintGrey,}}>
+    <View style={{ paddingHorizontal: 20}}>
       <FlatList
-        showsVerticalScrollIndicator={false}
-        // style={{paddingTop:16}}
+        style={{  }}
+        scrollEnabled={false}
         data={hospitalList}
         renderItem={({ item, index }) => (
           <Pressable
-          style={[index == 0 && {marginTop:16}]}
+            style={[index == 0 && { marginTop: 16 }]}
             onPress={() =>
               router.navigate({
                 pathname: "/HospitalDetail",

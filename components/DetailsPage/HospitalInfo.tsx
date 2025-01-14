@@ -1,18 +1,12 @@
 import { View, Text, Image, FlatList, Pressable } from "react-native";
 import { Colors } from "@/constants/Colors";
-import ActionButtons from "./ActionButtons";
 import { styles } from "@/constants/Styles";
 import moment from "moment";
 import { Button, XStack } from "tamagui";
 import {
   ArrowRight,
-  BriefcaseBusiness,
-  Calendar,
-  CalendarDays,
-  ChevronRight,
+  BriefcaseMedical,
   Clock,
-  Clock1,
-  Clock10,
   Clock2,
   Globe,
   Mail,
@@ -25,13 +19,14 @@ import {
 import { useState } from "react";
 import Review from "../Shared/Review";
 import { router } from "expo-router";
+import ReadMore from "../Shared/ReadMore";
 
-export default function HospitalInfo(props: { hospital: any }) {
-  const hospital = props.hospital;
-  const [readMore, setReadMore] = useState(true);
+export default function HospitalInfo({ hospital }: any) {
 
   const fromTime = hospital.attributes.From_Time;
   const toTime = hospital.attributes.to_Time;
+  const email: any = "mailto:" + hospital.attributes.Email;
+  const tel: any = "tel:" + hospital.attributes.Phone;
 
   function hrs(time: any) {
     let dt = moment();
@@ -43,131 +38,172 @@ export default function HospitalInfo(props: { hospital: any }) {
   }
 
   return (
-    <View style={{ gap: 12, marginBottom: 20 }}>
+    <View style={{ gap: 14, marginBottom: 20 }}>
       {/* Title and Description */}
-      <View style={{ gap: 8, paddingHorizontal: 20 }}>
-        <Text style={styles.h2title}>{hospital.attributes.Name}</Text>
 
-        <Text
-          onPress={() => setReadMore(!readMore)}
-          style={{ fontFamily: "InterRegular", color: Colors.text }}
+      <View style={{ gap: 14, paddingHorizontal: 20 }}>
+        <Text style={styles.h3title}>{hospital.attributes.Name}</Text>
+
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            gap: 5,
+          }}
         >
-          {hospital.attributes.Description.length > 80
-            ? readMore
-              ? hospital.attributes.Description.substring(0, 80) + "..."
-              : hospital.attributes.Description
-            : hospital.attributes.Description}{" "}
-          {hospital.attributes.Description.length > 80 && (
-            <Text
-              onPress={() => setReadMore(!readMore)}
-              style={{
-                fontFamily: "InterSemiBold",
-                color: Colors.tint,
-              }}
-            >
-              {readMore ? " read more" : " read less"}
-            </Text>
-          )}
-        </Text>
-      </View>
-
-      <XStack paddingHorizontal={20} justifyContent={"space-between"}>
-        <View style={{ borderColor: Colors.border, ...styles.infocard }}>
-          <Clock2
-            style={{ position: "absolute", right: 10, top: 10 }}
-            color={Colors.border}
-            size={32}
-          />
-          <Text style={{ color: Colors.title, ...styles.h4title }}>
+          <Clock color={Colors.text} size={20} />
+          <Text style={styles.p}>
             {hospital.attributes.From_Date.substring(0, 3)} -{" "}
             {hospital.attributes.To_Date.substring(0, 3)}
-          </Text>
-          <Text style={{ ...styles.p }}>
+            {"  "}
             {hrs(fromTime).format("h a")}
             {" - "}
             {hrs(toTime).format("h a")}
           </Text>
         </View>
 
-        <View style={{ borderColor: Colors.border, ...styles.infocard }}>
-          <Stethoscope
-            style={{ position: "absolute", right: 10, top: 10 }}
-            color={Colors.border}
-            size={32}
-          />
-          <Text style={{ color: Colors.title, ...styles.h4title }}>
-            {hospital.attributes.doctors.data.length}+
+        <XStack justifyContent={"space-between"}>
+          <View style={{ borderColor: Colors.border, ...styles.infocard }}>
+            <Clock2
+              style={{ position: "absolute", right: 10, top: 10 }}
+              color={Colors.border}
+              size={32}
+            />
+            <Text style={{ color: Colors.title, ...styles.h4title }}>
+              {hospital.attributes.From_Date.substring(0, 3)} -{" "}
+              {hospital.attributes.To_Date.substring(0, 3)}
+            </Text>
+            <Text style={{ ...styles.p }}>
+              {hrs(fromTime).format("h a")}
+              {" - "}
+              {hrs(toTime).format("h a")}
+            </Text>
+          </View>
+
+          <Pressable
+            onPress={() =>
+              router.push({
+                pathname: "/HospitalsDocs",
+                params: { hospitalName: hospital.attributes.Name },
+              })
+            }
+            style={{ borderColor: Colors.border, ...styles.infocard }}
+          >
+            <ArrowRight
+              // style={{ position: "absolute", right: 10, bottom: 10 }}
+              size={16}
+              color={Colors.text}
+            />
+            <Stethoscope
+              style={{ position: "absolute", right: 10, top: 10 }}
+              color={Colors.border}
+              size={32}
+            />
+            <Text style={{ color: Colors.title, ...styles.h4title }}>
+              {hospital.attributes.doctors.data.length}+
+            </Text>
+            <Text style={{ ...styles.p }}>Doctors</Text>
+          </Pressable>
+
+          <View style={{ borderColor: Colors.green, ...styles.infocard }}>
+            <Star
+              style={{ position: "absolute", right: 10, top: 10 }}
+              opacity={1}
+              color={Colors.green}
+              size={32}
+            />
+            <Text style={{ color: Colors.title, ...styles.h4title }}>
+              {hospital.attributes.Rating}
+            </Text>
+            <Text style={{ ...styles.p }}>Ratings</Text>
+          </View>
+        </XStack>
+
+        <View style={{ gap: 8 }}>
+          <Text style={{ color: Colors.title + "90", ...styles.title }}>
+            About
           </Text>
-          <Text style={{ ...styles.p }}>Doctors</Text>
-        </View>
 
-        <View style={{ borderColor: Colors.green, ...styles.infocard }}>
-          <Star
-            style={{ position: "absolute", right: 10, top: 10 }}
-            opacity={1}
-            color={Colors.green}
-            size={32}
-          />
-          <Text style={{ color: Colors.title, ...styles.h4title }}>
-            {hospital.attributes.Rating}
-          </Text>
-          <Text style={{ ...styles.p }}>Ratings</Text>
+          <ReadMore data={hospital.attributes.Description} length={120} />
         </View>
-      </XStack>
+      </View>
 
-      <XStack paddingHorizontal={20} justifyContent={"space-between"}>
-        <View style={{ borderColor: Colors.border, ...styles.infocard }}>
-          <Mail
-            style={{ position: "absolute", right: 10, top: 10 }}
-            color={Colors.border}
-            size={32}
-          />
-          <Text style={{ color: Colors.title, ...styles.h4title }}>Email</Text>
-        </View>
+      {/* QUICK LINKS */}
+      <View style={{ paddingHorizontal: 20, gap: 8 }}>
+        <Text style={{ color: Colors.title + "90", ...styles.title }}>
+          Quick Links
+        </Text>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            borderRadius: 16,
+            overflow: "hidden",
+          }}
+        >
+          <Pressable
+            onPress={() => router.navigate(email)}
+            style={{ ...styles.quickLink }}
+          >
+            <Mail style={{}} color={Colors.title + "80"} size={24} />
+            <View>
+              <Text style={{ color: Colors.title + "80", ...styles.title }}>
+                Mail us
+              </Text>
+              <Text style={{ fontSize: 10, ...styles.p }}>
+                {hospital.attributes.Email.substring(0, 11)}..
+              </Text>
+            </View>
+          </Pressable>
 
-        <View style={{ borderColor: Colors.border, ...styles.infocard }}>
-          <Globe
-            style={{ position: "absolute", right: 10, top: 10 }}
-            color={Colors.border}
-            size={32}
-          />
-          <Text style={{ color: Colors.title, ...styles.h4title }}>
-            Website
-          </Text>
-        </View>
+          <Pressable
+            onPress={() => router.navigate(hospital.attributes.Website)}
+            style={{ ...styles.quickLink }}
+          >
+            <Globe style={{}} color={Colors.title + "80"} size={24} />
+            <View>
+              <Text style={{ color: Colors.title + "80", ...styles.title }}>
+                Visit us
+              </Text>
+              <Text style={{ fontSize: 10, ...styles.p }}>
+                {hospital.attributes.Website.substring(12, 24)}..
+              </Text>
+            </View>
+          </Pressable>
 
-        <View style={{ borderColor: Colors.border, ...styles.infocard }}>
-          <Phone
-            style={{ position: "absolute", right: 10, top: 10 }}
-            opacity={1}
-            color={Colors.border}
-            size={32}
-          />
-          <Text style={{ color: Colors.title, ...styles.h4title }}>Call</Text>
+          <Pressable
+            onPress={() => router.navigate(tel)}
+            style={{ ...styles.quickLink }}
+          >
+            <Phone style={{}} color={Colors.title + "80"} size={24} />
+            <View>
+              <Text style={{ color: Colors.title + "80", ...styles.title }}>
+                Call
+              </Text>
+              <Text style={{ fontSize: 10, ...styles.p }}>
+                +91 {hospital.attributes.Phone.substring(0, 5)}..
+              </Text>
+            </View>
+          </Pressable>
         </View>
-      </XStack>
+      </View>
 
       <View style={{ marginVertical: 10, ...styles.line }} />
 
       {/* Specialities */}
 
       <View style={{ paddingHorizontal: 20, gap: 8 }}>
-        <Text style={{ color: Colors.title, ...styles.h3title }}>
+        <Text style={{ color: Colors.title, ...styles.h4title }}>
           Specialities
         </Text>
         <FlatList
           data={hospital.attributes.categories.data}
           scrollEnabled={false}
           numColumns={3}
-          columnWrapperStyle={{gap:8}}
+          columnWrapperStyle={{ gap: 8 }}
+          contentContainerStyle={{ gap: 8 }}
           renderItem={({ item }) => (
-            <Pressable
-              onPress={() =>
-                router.push({
-                  pathname: "/HospitalsDocs",
-                  params: { hospitalName: hospital.attributes.Name },
-                })
-              }
+            <View
               style={{
                 paddingHorizontal: 8,
                 paddingVertical: 4,
@@ -176,7 +212,7 @@ export default function HospitalInfo(props: { hospital: any }) {
               }}
             >
               <Text style={styles.p}>{item.attributes.Name}</Text>
-            </Pressable>
+            </View>
           )}
         />
       </View>
@@ -186,7 +222,7 @@ export default function HospitalInfo(props: { hospital: any }) {
       {/* ADDRESS */}
 
       <View style={{ paddingHorizontal: 20, gap: 8 }}>
-        <Text style={{ color: Colors.title, ...styles.h3title }}>Location</Text>
+        <Text style={{ color: Colors.title, ...styles.h4title }}>Location</Text>
         <XStack gap={8} alignItems={"center"}>
           <View
             style={{
@@ -211,7 +247,7 @@ export default function HospitalInfo(props: { hospital: any }) {
       {/* REVIEWS */}
 
       <View style={{ paddingHorizontal: 20, gap: 12 }}>
-        <Text style={{ color: Colors.title, ...styles.h3title }}>Reviews</Text>
+        <Text style={{ color: Colors.title, ...styles.h4title }}>Reviews</Text>
 
         <View
           style={{
@@ -233,7 +269,7 @@ export default function HospitalInfo(props: { hospital: any }) {
             <Text style={{ color: Colors.title, ...styles.h3title }}>
               Ratings
             </Text>
-            <Text style={{ color: Colors.text, ...styles.h4title }}>
+            <Text style={{ color: Colors.text, fontFamily: "Inter" }}>
               (120 Reviews)
             </Text>
           </View>

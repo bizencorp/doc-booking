@@ -10,7 +10,7 @@ export default function DoctorInfoBig({ data }: any) {
       style={{
         gap: 1,
         backgroundColor: Colors.tintGrey,
-        paddingBottom: 40,
+        paddingBottom: 20,
         alignItems: "center",
         paddingHorizontal: 20,
       }}
@@ -56,7 +56,7 @@ export default function DoctorInfoBig({ data }: any) {
 
       <Text style={styles.h2title}>{data.name}</Text>
 
-      <Text style={{ fontSize: 16, ...styles.p }}>{data.category}</Text>
+      {/* <Text style={{ fontSize: 16, ...styles.p }}>{data.category}</Text> */}
     </View>
   );
 }

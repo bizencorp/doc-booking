@@ -1,4 +1,4 @@
-import { View, Text, ActivityIndicator } from "react-native";
+import { View, Text, ActivityIndicator, ScrollView } from "react-native";
 import React, { useState } from "react";
 import { useEffect } from "react";
 import GlobalApi from "@/constants/GlobalApi";
@@ -7,10 +7,14 @@ import { styles } from "@/constants/Styles";
 import HospitalDoctorTabs from "@/components/HospitalDoctorScreen/HospitalDoctorTabs";
 import HospitalListBig from "@/components/HospitalDoctorScreen/HospitalListBig";
 import DoctorList from "@/components/HospitalDoctorScreen/DoctorList";
+import SearchBar from "@/components/Home/SearchBar";
+import Categories from "@/components/Explore/Categories";
+import TopDoctors from "@/components/Explore/TopDoctors";
+import TopHospitals from "@/components/Explore/TopHospitals";
 
 export default function Explore() {
   const [hospitalList, setHospitalList]: any = useState();
-  const [doctorList, setDoctorList] :any = useState();
+  const [doctorList, setDoctorList]: any = useState();
   const [activeTab, setActiveTab] = useState("Hospital");
 
   useEffect(() => {
@@ -31,28 +35,21 @@ export default function Explore() {
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: Colors.background }}>
-      <View
-        style={{
-          position: "absolute",
-          top: 0,
-          backgroundColor: Colors.background,
-          paddingHorizontal: 20,
-          paddingTop: 45,
-          alignItems: "center",
-          paddingBottom: 10,
-          zIndex: 2,
-          width: "100%",
-        }}
-      >
-        <Text style={styles.h1title}>Explore</Text>
-        <HospitalDoctorTabs
-          activeTab={(value: string) => setActiveTab(value)}
-        />
+    <View
+      style={{ backgroundColor: Colors.background, flex: 1, paddingBottom: 75 }}
+    >
+      <View style={styles.pHeadwhite}>
+        <SearchBar bg={true} setSearchText={(value: any) => console.log(value)} />
       </View>
+      {/* <HospitalDoctorTabs
+        activeTab={(value: string) => setActiveTab(value)}
+        options={["Hospital", "Doctor", "Nurse"]}
+      /> */}
 
-      <View style={{ marginTop: 155, paddingBottom: 75 }}>
-        {activeTab == "Hospital" ? (
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+      >
+        {/* {activeTab == "Hospital" ? (
           !hospitalList?.length ? (
             <ActivityIndicator
               size={"large"}
@@ -70,8 +67,11 @@ export default function Explore() {
           />
         ) : (
           <DoctorList doctorList={doctorList} />
-        )}
-      </View>
+        )} */}
+        <Categories/>
+        <TopDoctors/>
+        <TopHospitals/>
+      </ScrollView>
     </View>
   );
 }

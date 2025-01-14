@@ -8,7 +8,6 @@ export default function Header() {
   return (
     <View
       style={{
-        backgroundColor: Colors.tint,
         height: 90,
         justifyContent:"flex-end",
       }}

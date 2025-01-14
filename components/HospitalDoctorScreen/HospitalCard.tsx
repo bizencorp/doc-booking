@@ -1,30 +1,30 @@
 import { View, Text, Image, FlatList } from "react-native";
 import React from "react";
 import { Colors } from "@/constants/Colors";
-import { Clock, MapPin, StarFull, Verified } from "@tamagui/lucide-icons";
-import { Button } from "tamagui";
+import { BriefcaseMedical, MapPin, StarFull } from "@tamagui/lucide-icons";
 import { styles } from "@/constants/Styles";
 
-export default function HospitalCard(props: { hospital: any }) {
-  const hospital = props.hospital;
+export default function HospitalCard({ hospital }: any) {
+  const adr = hospital.attributes.Address.split(",").reverse();
+  let category = hospital.attributes.categories.data;
+  category = category.slice(0,2);
+
   return (
     <View
       style={{
         backgroundColor: Colors.background,
         borderRadius: 20,
-        overflow: "hidden",
         marginBottom: 16,
-        padding: 16,
-        gap: 8,
+        padding: 8,
       }}
     >
       <View>
         <Image
           source={{ uri: hospital.attributes.Image.data[0].attributes.url }}
           style={{
-            height: 160,
+            height: 170,
             width: "100%",
-            borderRadius: 12,
+            borderRadius: 14,
           }}
         />
         <View
@@ -34,11 +34,11 @@ export default function HospitalCard(props: { hospital: any }) {
             gap: 2,
             paddingVertical: 2,
             paddingHorizontal: 6,
-            backgroundColor: Colors.green,
-            borderRadius: 6,
+            backgroundColor: Colors.rating,
+            borderRadius: 8,
             position: "absolute",
-            right: 10,
-            top: 10,
+            right: 5,
+            top: 5,
           }}
         >
           <StarFull size={16} color={Colors.background} />
@@ -48,71 +48,41 @@ export default function HospitalCard(props: { hospital: any }) {
         </View>
       </View>
 
-      <View>
-        <Text
-          style={{
-            fontSize: 18,
-            fontFamily: "InterSemiBold",
-            color: Colors.title,
-          }}
-        >
-          {hospital.attributes.Name}
-        </Text>
-        <FlatList
-          data={hospital.attributes.categories.data}
-          horizontal={true}
-          ItemSeparatorComponent={() => (
-            <Text style={{ color: Colors.text }}>, </Text>
-          )}
-          showsHorizontalScrollIndicator={false}
-          renderItem={({ item, index }) =>
-            index <= 2 && (
-              <Text
-                style={{
-                  color: Colors.text,
-                  fontFamily: "InterRegular",
-                }}
-              >
-                {item.attributes.Name}
-              </Text>
-            )
-          }
-        />
+      <View style={{ gap: 4, padding: 8 }}>
+        <Text style={styles.h3title}>{hospital.attributes.Name}</Text>
+
         <View
           style={{
-            borderBottomWidth: 2,
-            borderBottomColor: Colors.tintGrey,
-            marginVertical: 10,
-          }}
-        />
-        <View
-          style={{
-            display: "flex",
             flexDirection: "row",
             alignItems: "center",
             gap: 5,
-            paddingBottom: 10,
+          }}
+        >
+          <BriefcaseMedical color={Colors.text} size={20} />
+          <FlatList
+            data={category}
+            horizontal
+            style={{ flexGrow: 0 }}
+            ItemSeparatorComponent={() => <Text style={styles.p}>, </Text>}
+            renderItem={({ item }: any) => (
+              <Text style={styles.p}>{item.attributes.Name}</Text>
+            )}
+          />
+          <Text style={styles.p}>
+            ...{hospital.attributes.categories.data.length - category.length} more
+          </Text>
+        </View>
+
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            gap: 5,
           }}
         >
           <MapPin color={Colors.text} size={20} />
-          <Text style={{ fontFamily: "InterLight", color: Colors.text }}>
-            {hospital.attributes.Address.length > 43
-              ? hospital.attributes.Address.substring(0, 43) + "..."
-              : hospital.attributes.Address}
-          </Text>
-        </View>
-        <View
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            gap: 5,
-            paddingBottom: 10,
-          }}
-        >
-          <Clock color={Colors.text} size={20} />
           <Text style={{ fontFamily: "InterRegular", color: Colors.text }}>
-            15min - 1.5km
+            {adr[2].substring(1)},{adr[1]},{adr[0]}
           </Text>
         </View>
       </View>

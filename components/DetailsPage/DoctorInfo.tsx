@@ -22,15 +22,12 @@ export default function DoctorInfo({ doctor }: any) {
   const fromTime: any = doctor.attributes.Start_time;
   const toTime = doctor.attributes.End_time;
   const [readMore, setReadMore] = useState(true);
-  const url =
-    "https://img.freepik.com/free-psd/3d-render-avatar-character_23-2150611765.jpg?t=st=1731415129~exp=1731418729~hmac=f0c38061b0989b9787dc086bc63deeeecf9a0944a6cb1151d0fb0bcf8ac94211&w=740";
 
   function hrs(time: any) {
     let dt = moment();
     dt.hours(time.substring(0, 2));
     dt.minutes(time.substring(3, 5));
     dt.seconds(Number("00"));
-
     return dt;
   }
 
@@ -87,17 +84,9 @@ export default function DoctorInfo({ doctor }: any) {
 
         <Text style={styles.h2title}>{doctor.attributes.Name}</Text>
 
-        <FlatList
-          data={doctor.attributes.categories.data}
-          horizontal={true}
-          showsHorizontalScrollIndicator={false}
-          style={{ marginBottom: 8 }}
-          renderItem={({ item }) => (
-            <Text style={{ fontSize: 16, ...styles.p }}>
-              {item.attributes.Name}
-            </Text>
-          )}
-        />
+        <Text style={{ fontSize: 16, ...styles.p }}>
+          {doctor.attributes.category.data.attributes.Name}
+        </Text>
         <ActionButtons />
       </View>
 
@@ -205,7 +194,7 @@ export default function DoctorInfo({ doctor }: any) {
               Speciality
             </Text>
             <Text style={{ ...styles.p }}>
-              {doctor.attributes.categories.data[0].attributes.Name}
+              {doctor.attributes.category.data.attributes.Name}
             </Text>
           </View>
         </XStack>
@@ -275,18 +264,17 @@ export default function DoctorInfo({ doctor }: any) {
           </View>
 
           {/* REVIEW COMPONENT */}
-          
-          <Review star={3} />
-        <Button
-          theme={"yellow"}
-          color={Colors.title}
-          iconAfter={ArrowRight}
-          onPress={() => console.log("View all reviews")}
-        >
-          View all Reviews
-        </Button>
-        </View>
 
+          <Review star={3} />
+          <Button
+            theme={"yellow"}
+            color={Colors.title}
+            iconAfter={ArrowRight}
+            onPress={() => console.log("View all reviews")}
+          >
+            View all Reviews
+          </Button>
+        </View>
       </View>
     </View>
   );

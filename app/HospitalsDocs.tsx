@@ -1,4 +1,4 @@
-import { View, Text, ActivityIndicator } from "react-native";
+import { View, Text, ActivityIndicator, ScrollView } from "react-native";
 import React, { useState } from "react";
 import PageHeader from "../components/Shared/PageHeader";
 import DoctorList from "../components/HospitalDoctorScreen/DoctorList";
@@ -24,12 +24,12 @@ export default function HospitalDoctorList() {
   };
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, backgroundColor: Colors.tintGrey }}>
       <View style={styles.pHeadwhite}>
-        <PageHeader title={hospitalName} rightBtn={"search"} />
+        <PageHeader title={hospitalName} rightBtn={""} />
       </View>
 
-      <View style={{ marginTop: 85 }}>
+      <ScrollView showsVerticalScrollIndicator={false}>
         {!DoctorList?.length ? (
           <ActivityIndicator
             size={"large"}
@@ -39,7 +39,7 @@ export default function HospitalDoctorList() {
         ) : (
           <DoctorList doctorList={doctorList} Check={false} />
         )}
-      </View>
+      </ScrollView>
     </View>
   );
 }

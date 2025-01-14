@@ -1,4 +1,4 @@
-import { View, Text, ActivityIndicator } from "react-native";
+import { View, Text, ActivityIndicator, ScrollView } from "react-native";
 import React, { useState } from "react";
 import PageHeader from "../components/Shared/PageHeader";
 import HospitalDoctorTabs from "../components/HospitalDoctorScreen/HospitalDoctorTabs";
@@ -8,14 +8,14 @@ import { useEffect } from "react";
 import GlobalApi from "@/constants/GlobalApi";
 import { Colors } from "@/constants/Colors";
 import { useLocalSearchParams } from "expo-router";
-
+import { styles } from "@/constants/Styles";
 
 export default function HospitalDoctorList() {
-  const {categoryName} = useLocalSearchParams();
+  const { categoryName } = useLocalSearchParams();
 
-  const [hospitalList, setHospitalList] : any[] = useState()
-  const [doctorList, setDoctorList] = useState()
-  const [activeTab, setActiveTab] = useState('Hospital')
+  const [hospitalList, setHospitalList]: any[] = useState();
+  const [doctorList, setDoctorList] = useState();
+  const [activeTab, setActiveTab] = useState("Hospital");
 
   useEffect(() => {
     getHospitalByCategory();
@@ -35,27 +35,16 @@ export default function HospitalDoctorList() {
   };
 
   return (
-    <View>
-      <View
-        style={{
-          position: "absolute",
-          top: 0,
-          backgroundColor: Colors.background,
-          paddingHorizontal: 20,
-          paddingTop: 40,
-          paddingBottom: 10,
-          gap: 6,
-          zIndex: 2,
-          width:'100%'
-        }}
-      >
+    <View style={{ flex: 1 }}>
+      <View style={styles.pHeadwhite}>
         <PageHeader title={categoryName} rightBtn={"search"} />
-        <HospitalDoctorTabs
-          activeTab={(value: string) => setActiveTab(value)}
-        />
       </View>
+      <HospitalDoctorTabs
+        activeTab={(value: string) => setActiveTab(value)}
+        options={["Hospital", "Doctor", "Nurse"]}
+      />
 
-      <View style={{ marginTop: 165}}>
+      <ScrollView showsVerticalScrollIndicator={false}>
         {activeTab == "Hospital" ? (
           !hospitalList?.length ? (
             <ActivityIndicator
@@ -64,7 +53,7 @@ export default function HospitalDoctorList() {
               style={{ marginTop: "50%" }}
             />
           ) : (
-            <HospitalListBig hospitalList={hospitalList}/>
+            <HospitalListBig hospitalList={hospitalList} />
           )
         ) : !DoctorList?.length ? (
           <ActivityIndicator
@@ -75,8 +64,7 @@ export default function HospitalDoctorList() {
         ) : (
           <DoctorList doctorList={doctorList} />
         )}
-      </View>
+      </ScrollView>
     </View>
   );
 }
- 

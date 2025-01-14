@@ -9,7 +9,6 @@ import DoctorNurseBtn from "@/components/Home/DoctorNurseBtn";
 import { useUser } from "@clerk/clerk-expo";
 import { useEffect, useState } from "react";
 import GlobalApi from "@/constants/GlobalApi";
-import moment from "moment";
 import Doctors from "@/components/Home/Doctors";
 
 export default function Home() {
@@ -17,19 +16,17 @@ export default function Home() {
 
   if (isLoaded || isSignedIn) {
     const getUser = () => {
-      GlobalApi.UserInfo(user?.primaryEmailAddress?.emailAddress)
+      GlobalApi.UserInfo(user?.primaryEmailAddress?.emailAddress);
     };
     useEffect(() => {
       getUser();
-      if(!getUser){
-        newUser()
+      if (!getUser) {
+        newUser();
       }
     }, [user?.primaryEmailAddress?.emailAddress]);
-
   }
 
   function newUser() {
-
     const data = {
       data: {
         fullname: user?.fullName,
@@ -41,23 +38,25 @@ export default function Home() {
       },
     };
 
-    GlobalApi.makeUser(data).then().catch(function (error) {
-      if (error.response) {
-        console.log(
-          "Server responded with status code:",
-          error.response.status
-        );
-        console.log("Response data:", error.response.data);
-      } else if (error.request) {
-        console.log("No response received:", error.request);
-      } else {
-        console.log("Error creating request:", error.message);
-      }
-    });
+    GlobalApi.makeUser(data)
+      .then()
+      .catch(function (error) {
+        if (error.response) {
+          console.log(
+            "Server responded with status code:",
+            error.response.status
+          );
+          console.log("Response data:", error.response.data);
+        } else if (error.request) {
+          console.log("No response received:", error.request);
+        } else {
+          console.log("Error creating request:", error.message);
+        }
+      });
   }
 
   return (
-    <View style={{ backgroundColor: Colors.background, paddingBottom: 75 }}>
+    <View style={{ backgroundColor: Colors.tint, paddingBottom: 75 }}>
       <FlatList
         data={[]}
         showsVerticalScrollIndicator={false}
@@ -68,11 +67,20 @@ export default function Home() {
           <>
             <Header />
             <SearchBar setSearchText={(value: any) => console.log(value)} />
-            <Categories />
-            <DoctorNurseBtn />
-            {/* <Slider /> */}
-            <Doctors/>
-            <Hospitals />
+            <View
+              style={{
+                backgroundColor: Colors.background,
+                borderTopEndRadius: 20,
+                borderTopLeftRadius: 20,
+                paddingVertical: 20,
+              }}
+            >
+              <DoctorNurseBtn />
+              <Categories />
+              {/* <Slider /> */}
+              <Doctors />
+              <Hospitals />
+            </View>
           </>
         }
       />

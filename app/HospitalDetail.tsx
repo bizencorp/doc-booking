@@ -1,5 +1,5 @@
 import { View, Text, Image, TouchableOpacity, ScrollView } from "react-native";
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import PageHeader from "@/components/Shared/PageHeader";
 import { Colors } from "@/constants/Colors";
 import HospitalInfo from "@/components/DetailsPage/HospitalInfo";
@@ -39,7 +39,7 @@ export default function HospitalDetail() {
   return (
     hospital && (
       <View>
-        <Animated.View style={[styles.pHead, rStyle]}>
+        <Animated.View style={[{position:"absolute",top:0},styles.pHead, rStyle]}>
           <PageHeader title={headerBG ? hospital.attributes.Name : ""} rightBtn="heart" />
         </Animated.View>
         <ScrollView
@@ -47,11 +47,10 @@ export default function HospitalDetail() {
           onScroll={onScroll}
           scrollEventThrottle={16}
         >
-          <View style={{ padding: 10 }}>
+          <View>
             <Animated.Image
               source={{ uri: hospital.attributes.Image.data[0].attributes.url }}
-              style={{ width: "100%", height: 260, borderRadius: 20 }}
-              sharedTransitionTag="hospital"
+              style={{ width: "100%", height: 300}}
             />
           </View>
 

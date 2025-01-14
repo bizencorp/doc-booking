@@ -9,19 +9,19 @@ export default function HospitalItems({ hospital }: any) {
   return (
     <View
       style={{
-        width: 250,
+        width: 220,
         borderRadius: 20,
         overflow: "visible",
-        backgroundColor: Colors.background,
+        backgroundColor: Colors.tintGrey,
         borderWidth: 1,
         borderColor: Colors.border,
-        padding: 10,
+        padding: 4,
       }}
     >
       <View>
         <Animated.Image
           source={{ uri: hospital.attributes.Image.data[0].attributes.url }}
-          style={{ width: "100%", height: 150, borderRadius: 12 }}
+          style={{ width: "100%", height: 150, borderRadius: 16 }}
           sharedTransitionTag="hospital"
         />
         <View
@@ -32,31 +32,29 @@ export default function HospitalItems({ hospital }: any) {
             paddingVertical: 2,
             paddingHorizontal: 6,
             backgroundColor: Colors.green,
-            borderRadius:6,
-            position:"absolute",
-            right:10,
-            top:10
+            borderRadius: 6,
+            position: "absolute",
+            right: 10,
+            top: 10,
           }}
         >
-          <StarFull size={16} color={Colors.background}/>
-          <Text style={{ color:Colors.background,...styles.title }}>{hospital.attributes.Rating}</Text>
+          <StarFull size={16} color={Colors.background} />
+          <Text style={{ color: Colors.background, ...styles.title }}>
+            {hospital.attributes.Rating}
+          </Text>
         </View>
       </View>
-      <View style={{ paddingVertical: 12 }}>
+      <View style={{ paddingVertical: 12, paddingLeft: 8 }}>
         <Text
-          style={{
-            fontFamily: "InterSemiBold",
-            fontSize: 16,
-            color: Colors.title,
-          }}
+          style={{color: Colors.title,...styles.title}}
         >
           {hospital.attributes.Name.length > 25
             ? hospital.attributes.Name.substring(0, 25) + "..."
             : hospital.attributes.Name}
         </Text>
         <Text style={{ color: Colors.text, fontFamily: "InterRegular" }}>
-          {hospital.attributes.Address.length > 55
-            ? hospital.attributes.Address.substring(0, 55) + "..."
+          {hospital.attributes.Address.length > 50
+            ? hospital.attributes.Address.substring(0, 50) + "..."
             : hospital.attributes.Address}
         </Text>
       </View>

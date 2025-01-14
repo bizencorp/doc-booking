@@ -1,3 +1,4 @@
+import PageHeader from "@/components/Shared/PageHeader";
 import { Colors } from "@/constants/Colors";
 import GlobalApi from "@/constants/GlobalApi";
 import { styles } from "@/constants/Styles";
@@ -39,7 +40,8 @@ import {
 } from "tamagui";
 
 const Profile = () => {
-  const [userInfo, setUserInfo]: any = useState();
+  const [userInfo, setUserInfo]: any = useState()
+  const [patients, setPatients] = useState([])
 
   const { signOut } = useAuth();
   const { isLoaded, isSignedIn, user } = useUser();
@@ -54,10 +56,13 @@ const Profile = () => {
   const getUser = () => {
     GlobalApi.UserInfo(user?.primaryEmailAddress?.emailAddress)
       .then((resp) => {
-        setUserInfo(resp.data.data);
+        setUserInfo(resp.data.data[0]);
+        setPatients(resp.data.data[0].attributes.patients)
       })
       .catch((error) => console.log(error));
   };
+
+
 
   const options = [
     { name: "Patients", url: "/", icon: <Users color={Colors.title} /> },
@@ -81,7 +86,7 @@ const Profile = () => {
   ];
 
   const cta = [
-    { name: "Patients", url: "/", icon: <Users color={Colors.title} /> },
+    { name: "Patients", url: "/Patients", icon: <Users color={Colors.title} /> },
     { name: "Favourites", url: "/", icon: <Heart color={Colors.title} /> },
     {
       name: "Settings",
@@ -94,6 +99,7 @@ const Profile = () => {
     <View style={{ flex: 1, backgroundColor: Colors.background }}>
       <View style={{ ...styles.pHeadwhite }}>
         <Text style={styles.h2title}>Profile</Text>
+        {/* <PageHeader title={"Appointment"} rightBtn={"none"} /> */}
       </View>
 
       <ScrollView
@@ -105,7 +111,6 @@ const Profile = () => {
         {userInfo && (
           <View
             style={{
-              marginTop: 90,
               alignItems: "center",
               padding: 20,
               flexDirection: "row",
@@ -131,10 +136,10 @@ const Profile = () => {
               }}
             >
               <Text style={{ color: Colors.title, ...styles.h4title }}>
-                {userInfo[0]?.attributes?.fullname}
+                {userInfo?.attributes?.fullname}
               </Text>
               <Text style={{ ...styles.p }}>
-                {userInfo[0]?.attributes?.email}
+                {userInfo?.attributes?.email}
               </Text>
               <TouchableOpacity
                 onPress={() =>
@@ -176,7 +181,14 @@ const Profile = () => {
             scrollEnabled={false}
             renderItem={({ item }: any) => (
               <TouchableOpacity
-                onPress={() => router.navigate(item.url)}
+                onPress={() => {
+                  item.name == "Patients"
+                    ? router.push({
+                        pathname: item.url,
+                        params: { patients: JSON.stringify(patients) },
+                      })
+                    : router.push(item.url);
+                }}
                 style={{
                   paddingVertical: 20,
                   alignItems: "center",
@@ -300,7 +312,6 @@ const Profile = () => {
             </AlertDialog.Content>
           </AlertDialog.Portal>
         </AlertDialog>
-        
       </ScrollView>
     </View>
   );

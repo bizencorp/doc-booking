@@ -11,6 +11,7 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 import { styles } from "@/constants/Styles";
+import { Button } from "tamagui";
 
 export default function DoctorDetail() {
   const params: any = useLocalSearchParams();
@@ -55,12 +56,7 @@ export default function DoctorDetail() {
           scrollEventThrottle={16}
           overScrollMode="never"
         >
-          <View
-            style={{
-              marginTop: 90,
-              justifyContent: "center",
-            }}
-          >
+          <View style={{ justifyContent: "center" }}>
             <DoctorInfo doctor={doctor} />
           </View>
         </ScrollView>
@@ -75,30 +71,22 @@ export default function DoctorDetail() {
             backgroundColor: "white",
           }}
         >
-          <TouchableOpacity
+          <Button
             onPress={() =>
               router.navigate({
                 pathname: "/BookAppointment",
                 params: { doctor: JSON.stringify(doctor) },
               })
             }
-            style={{
-              backgroundColor: Colors.tint,
-              paddingVertical: 16,
-              borderRadius: 12,
-            }}
+            borderRadius={12}
+            theme={"blue"}
+            size={"$5"}
+            color={"white"}
+            backgroundColor={Colors.tint}
+            pressStyle={{ backgroundColor: "#0c5adb90" }}
           >
-            <Text
-              style={{
-                color: Colors.background,
-                fontFamily: "InterRegular",
-                fontSize: 16,
-                textAlign: "center",
-              }}
-            >
-              Book Appointment
-            </Text>
-          </TouchableOpacity>
+            Book Appointment
+          </Button>
         </View>
       </>
     )

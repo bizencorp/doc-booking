@@ -58,7 +58,7 @@ export default function RootLayout() {
               <Stack.Screen
                 name="HospitalDoctorList"
                 options={{
-                  contentStyle: { backgroundColor: Colors.border },
+                  contentStyle: { backgroundColor: Colors.tintGrey },
                 }}
               />
               <Stack.Screen
@@ -95,6 +95,12 @@ export default function RootLayout() {
                 name="EditBooking"
                 options={{
                   contentStyle: { backgroundColor: Colors.border },
+                }}
+              />
+              <Stack.Screen
+                name="Patients"
+                options={{
+                  contentStyle: { backgroundColor: Colors.background },
                 }}
               />
             </Stack>

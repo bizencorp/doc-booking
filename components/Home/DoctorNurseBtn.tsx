@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, FlatList } from "react-native";
+import { View, Text, TouchableOpacity, FlatList, Pressable } from "react-native";
 import React from "react";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { Colors } from "@/constants/Colors";
@@ -35,7 +35,7 @@ export default function DoctorNurseBtn() {
           paddingHorizontal: 20,
         }}
         renderItem={({ item }) => (
-          <TouchableOpacity
+          <Pressable
             onPress={() => console.log(item.name + " Btn Pressed")}
             style={{
               alignItems: "center",
@@ -44,7 +44,7 @@ export default function DoctorNurseBtn() {
               borderWidth: 1,
               borderColor: Colors.border,
               width: "48%",
-              padding: 4,
+              padding: 8,
               flexDirection: "row",
               justifyContent: "flex-start",
               gap: 10,
@@ -54,11 +54,11 @@ export default function DoctorNurseBtn() {
               style={{
                 backgroundColor: Colors.border,
                 padding: 16,
-                borderRadius: 16,
+                borderRadius: 14,
               }}
             >
               {item.icon == "nurse" ? (
-                <Syringe size={22} color={item.color} />
+                <Syringe size={22} color={item.color} style={{}} />
               ) : (
                 <Stethoscope size={22} color={item.bgColor} />
               )}
@@ -66,7 +66,7 @@ export default function DoctorNurseBtn() {
             <Text style={{ color: item.color, ...styles.h2title }}>
               {item.name}
             </Text>
-          </TouchableOpacity>
+          </Pressable>
         )}
       />
     </View>

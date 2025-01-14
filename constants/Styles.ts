@@ -37,6 +37,30 @@ export const styles = StyleSheet.create({
     borderBottomColor: Colors.border,
   },
 
+  selectedTab: {
+    left: 8,
+    top: 8,
+    bottom: 8,
+    right: 8,
+    height: "100%",
+    width: "33.33%",
+    position: "absolute",
+    backgroundColor: Colors.tint,
+    borderRadius: 50,
+  },
+
+  ratingChip: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 3,
+    position: "absolute",
+    right: 0,
+    bottom: 0,
+    paddingVertical: 2,
+    paddingHorizontal: 4,
+    borderRadius: 6,
+    backgroundColor: Colors.rating + "30",
+  },
   // LOGIN PAGE UI
 
   appImage: {
@@ -71,8 +95,6 @@ export const styles = StyleSheet.create({
 
   // PAGE HEADER
   pHead: {
-    position: "absolute",
-    top: 0,
     paddingHorizontal: 20,
     paddingBottom: 10,
     justifyContent: "flex-end",
@@ -81,15 +103,13 @@ export const styles = StyleSheet.create({
     width: "100%",
   },
   pHeadwhite: {
-    position: "absolute",
-    top: 0,
     paddingHorizontal: 20,
     paddingBottom: 10,
     justifyContent: "flex-end",
-    height: 90,
+    height: 100,
     zIndex: 2,
     width: "100%",
-    backgroundColor:Colors.background
+    backgroundColor: Colors.background,
   },
 
   // HOSPITAL DETAILS PAGE
@@ -119,8 +139,17 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
     height: 90,
     width: Dimensions.get("screen").width * 0.28,
-    borderRadius: 12,
+    borderRadius: 16,
     justifyContent: "flex-end",
+  },
+  quickLink: {
+    backgroundColor: Colors.tintGrey,
+    width: "33%",
+    flexDirection: "row",
+    gap: 4,
+    alignItems: "center",
+    paddingLeft: 12,
+    paddingVertical: 14,
   },
 
   // BOOKING PAGE
@@ -130,8 +159,9 @@ export const styles = StyleSheet.create({
     marginRight: 12,
     alignItems: "center",
     borderRadius: 16,
-    borderWidth: 1,
+    // borderWidth: 1,
     borderColor: Colors.border,
+    backgroundColor: Colors.tintGrey,
   },
   selectedDT: {
     backgroundColor: Colors.tint,
@@ -214,7 +244,32 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: Colors.border,
   },
+
+  // APPOINTMENT LIST PAGE
+
+  status: {
+    fontFamily: "Inter",
+    fontSize: 12,
+    paddingHorizontal: 10,
+    paddingVertical: 3,
+    borderRadius: 50,
+    position: "absolute",
+    right: 0,
+    bottom: 8,
+  },
+
+  // PATIENT PAGE
+  patientCard:{
+    padding:10,
+    backgroundColor:Colors.background,
+    borderRadius:20,
+    marginBottom:10,
+    flexDirection:"row",
+    gap:8
+  }
 });
+
+
 
 
 

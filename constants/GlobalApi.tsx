@@ -25,7 +25,7 @@ const getHospitalByCategories = (category: any) =>
 
 const getDoctorByCategories = (category: any) =>
   AxiosInstance.get(
-    "/doctors?filters[categories][Name][$eq]=" + category + "&populate=*"
+    "/doctors?filters[category][Name][$eq]=" + category + "&populate=*"
   );
 const getDoctorByHospital = (hospital: any) =>
   AxiosInstance.get(
@@ -39,12 +39,16 @@ const getDoctorList = () => AxiosInstance.get("/doctors?populate=*");
 const makeAppointment = (data: any) =>
   AxiosInstance.post("/appointments", data);
 
-const updateAppointment = ({data,id}: any) =>
+const updateAppointment = (data: any, id:number) =>
   AxiosInstance.put("/appointments/"+ id, data);
 
 const Appointments = (email: any) =>
   AxiosInstance.get(
     "/appointments?filters[Email][$eq]=" + email + "&populate=*"
+  );
+const deletePatient = (email: any) =>
+  AxiosInstance.get(
+    "/patients?filters[Email][$eq]=" + email + "&populate=*"
   );
 
 const makeUser = (data: any) =>

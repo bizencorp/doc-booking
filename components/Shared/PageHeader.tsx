@@ -8,8 +8,7 @@ import { styles } from "@/constants/Styles";
 import { ArrowLeft, Heart, Search } from "@tamagui/lucide-icons";
 import { Button } from "tamagui";
 
-
-export default function PageHeader({ title, rightBtn  }:any) {
+export default function PageHeader({ title, rightBtn }: any) {
   return (
     <View
       style={{
@@ -23,11 +22,13 @@ export default function PageHeader({ title, rightBtn  }:any) {
       <Button
         onPress={() => router.back()}
         icon={ArrowLeft}
-        backgroundColor={Colors.tintGrey}
+        backgroundColor={"white"}
+        borderWidth={0}
         color={Colors.title}
         padding={10}
         scaleIcon={1.6}
         borderRadius={12}
+        pressStyle={{ backgroundColor: Colors.tintGrey }}
       />
 
       <Text style={styles.h4title}>{title}</Text>
@@ -36,29 +37,26 @@ export default function PageHeader({ title, rightBtn  }:any) {
         <Button
           icon={Search}
           color={Colors.title}
-          backgroundColor={Colors.tintGrey}
+          borderWidth={0}
+          backgroundColor={"white"}
           padding={10}
           scaleIcon={1.6}
           borderRadius={12}
+          pressStyle={{ backgroundColor: Colors.tintGrey }}
         />
       ) : rightBtn == "heart" ? (
         <Button
           icon={Heart}
-          backgroundColor={Colors.tintGrey}
+          borderWidth={0}
+          backgroundColor={"white"}
           color={Colors.title}
           padding={10}
           scaleIcon={1.6}
           borderRadius={12}
+          pressStyle={{ backgroundColor: Colors.border }}
         />
       ) : (
-        <View
-          style={{
-            padding: 10,
-            borderRadius: 12,
-          }}
-        >
-          <Ionicons name="heart" size={24} color={"transparent"} />
-        </View>
+        <View style={{width: 42,}}/>
       )}
     </View>
   );

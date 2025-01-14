@@ -4,20 +4,15 @@ import DoctorCard from "./DoctorCard";
 import { Colors } from "@/constants/Colors";
 import { router } from "expo-router";
 
-export default function DoctorList({ doctorList} : any) {
+export default function DoctorList({ doctorList }: any) {
   return (
-    <View
-      style={[
-        { paddingHorizontal: 20, backgroundColor: Colors.tintGrey },
-      ]}
-    >
+    <View style={{ paddingHorizontal: 20,}}>
       <FlatList
-        style={{paddingBottom:20,height:"100%"}}
-        showsVerticalScrollIndicator={false}
+        scrollEnabled={false}
         data={doctorList}
         renderItem={({ item, index }) => (
           <Pressable
-          style={[index == 0 && {marginTop:16}]}
+            style={[index == 0 && { marginTop: 16 }]}
             onPress={() =>
               router.navigate({
                 pathname: "/DoctorDetail",
@@ -25,7 +20,7 @@ export default function DoctorList({ doctorList} : any) {
               })
             }
           >
-            <DoctorCard doctor={item}/>
+            <DoctorCard doctor={item} />
           </Pressable>
         )}
       />
